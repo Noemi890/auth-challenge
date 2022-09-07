@@ -15,8 +15,7 @@ function App() {
   }, []);
 
   const handleRegister = async ({ username, password }) => {
-    
-    const res = await fetch(`${apiUrl}/user/register`, {
+    await fetch(`${apiUrl}/user/register`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -30,8 +29,19 @@ function App() {
 
   const handleLogin = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/login`, {
-      
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password
+      })
     })
+
+    const data = await res.json()
+    
+    localStorage.setItem('token', data)
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
