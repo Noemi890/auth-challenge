@@ -8,9 +8,16 @@ const jwtSecret = 'mysecret';
 const register = async (req, res) => {
     const { username, password } = req.body;
 
-    const createdUser = null;
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    res.json({ data: createdUser });
+    const createdUser = await prisma.user.create({
+        data: {
+            username,
+            password: hashedPassword
+        }
+    })
+    
+    res.status(201).json({ data: createdUser });
 };
 
 const login = async (req, res) => {
