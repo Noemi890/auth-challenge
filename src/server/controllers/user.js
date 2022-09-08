@@ -40,8 +40,8 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign({ username }, process.env.JWT_SECRET);
-
-    res.json({ data: token });
+    
+    res.json(token);
 };
 
 module.exports = {

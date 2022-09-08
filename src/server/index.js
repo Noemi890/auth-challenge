@@ -2,7 +2,8 @@
 require('dotenv').config();
 
 // Import express and cors
-const express = require('express');
+const express = require('express')
+require('express-async-errors')
 const cors = require('cors');
 
 // Set up express
@@ -37,3 +38,7 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`\n Server is running on http://localhost:${port}\n`);
 });
+
+app.use((error, req, res, next) => {
+    res.status(500).json({ error: error})
+})

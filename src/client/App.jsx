@@ -40,12 +40,31 @@ function App() {
     })
 
     const data = await res.json()
-    
     localStorage.setItem('token', data)
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
+    const token = localStorage.getItem('token')
+
+    const res = await fetch(`${apiUrl}/movie`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${token}`
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        runtimeMins
+      })
+    })
+
+    const data = await res.json()
+
+    const copy = movies.slice()
+    copy.push(data)
     
+    setMovies(copy)
   }
 
   return (
