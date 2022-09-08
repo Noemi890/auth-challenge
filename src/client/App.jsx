@@ -7,9 +7,12 @@ const apiUrl = 'http://localhost:4000';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [user, setUser] = useState('')
+  const [registerUser, setRegisteredUser] = useState(false)
 
+  let timeout
   const handleRegister = async ({ username, password }) => {
-    await fetch(`${apiUrl}/user/register`, {
+    const res = await fetch(`${apiUrl}/user/register`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
@@ -19,7 +22,16 @@ function App() {
           password
       })
     })
+
+    if (res.ok) {
+      timeout = setTimeout(alertFunction(), 10000)
+    }
+
   };
+
+  const alertFunction = () => {
+    alert('registered successfully!')
+  }
 
   const handleLogin = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/login`, {
@@ -36,6 +48,8 @@ function App() {
     const data = await res.json()
 
     localStorage.setItem('token', data.token)
+
+    setUser(data.user.username)
 
     const getMovies = await (await fetch(`${apiUrl}/movie/${data.user.id}`)).json()
 
@@ -71,6 +85,14 @@ function App() {
 
   return (
     <div className="App">
+      {(user) ? (
+        <h1>Welcome back, {user}</h1>
+      ) : (
+        <>
+        <h3>Login to see your movies</h3>
+        <h4>If you don't have an account, register!</h4>
+        </>
+      )}
       <h1>Register</h1>
       <UserForm handleSubmit={handleRegister} />
 
