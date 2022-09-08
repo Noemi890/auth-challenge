@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import MovieForm from './components/MovieForm';
 import UserForm from './components/UserForm';
@@ -60,7 +60,7 @@ function App() {
 
     const data = await res.json()
     let copy = []
-    
+
     if(movies.length > 0) {
     copy = movies.slice()
     }

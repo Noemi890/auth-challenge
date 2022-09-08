@@ -7,7 +7,7 @@ const register = async (req, res) => {
     const { username, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10)
-
+    try {
     const createdUser = await prisma.user.create({
         data: {
             username,
@@ -15,7 +15,11 @@ const register = async (req, res) => {
         }
     })
     
+    
     res.status(201).json({ data: createdUser });
+    } catch (e) {
+        res.status(400).json({error: 'username already exist'})
+    }
 };
 
 const login = async (req, res) => {
