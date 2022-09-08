@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const jwtSecret = 'mysecret';
-
 const register = async (req, res) => {
     const { username, password } = req.body;
 
@@ -41,7 +39,7 @@ const login = async (req, res) => {
 
     const token = jwt.sign({ username }, process.env.JWT_SECRET);
     
-    res.json(token);
+    res.json({token, user: foundUser});
 };
 
 module.exports = {

@@ -8,12 +8,6 @@ const apiUrl = 'http://localhost:4000';
 function App() {
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    fetch(`${apiUrl}/movie`)
-      .then(res => res.json())
-      .then(res => setMovies(res.data));
-  }, []);
-
   const handleRegister = async ({ username, password }) => {
     await fetch(`${apiUrl}/user/register`, {
       method: 'POST',
@@ -40,7 +34,12 @@ function App() {
     })
 
     const data = await res.json()
-    localStorage.setItem('token', data)
+
+    localStorage.setItem('token', data.token)
+
+    const getMovies = await (await fetch(`${apiUrl}/movie/${data.user.id}`)).json()
+
+    setMovies(getMovies)
   };
   
   const handleCreateMovie = async ({ title, description, runtimeMins }) => {
@@ -60,10 +59,13 @@ function App() {
     })
 
     const data = await res.json()
-
-    const copy = movies.slice()
+    let copy = []
+    console.log('movies', movies)
+    if(movies.length > 0) {
+    copy = movies.slice()
+    }
     copy.push(data)
-    
+
     setMovies(copy)
   }
 
@@ -79,8 +81,8 @@ function App() {
       <MovieForm handleSubmit={handleCreateMovie} />
 
       <h1>Movie list</h1>
-      <ul>
-        {movies.map(movie => {
+      <ul>{(movies) &&
+        (movies.map(movie => {
           return (
             <li key={movie.id}>
               <h3>{movie.title}</h3>
@@ -88,7 +90,7 @@ function App() {
               <p>Runtime: {movie.runtimeMins}</p>
             </li>
           );
-        })}
+        }))}
       </ul>
     </div>
   );
