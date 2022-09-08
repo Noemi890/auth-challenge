@@ -5,7 +5,6 @@ require('dotenv').config();
 const express = require('express')
 require('express-async-errors')
 const cors = require('cors');
-const { JsonWebTokenError } = require('jsonwebtoken');
 
 // Set up express
 const app = express();
@@ -39,11 +38,3 @@ const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`\n Server is running on http://localhost:${port}\n`);
 });
-
-app.use((error, req, res, next) => {
-    if (error instanceof JsonWebTokenError) {
-        return res.status(401).json({ msg: 'Invalid token.'})
-    }
-
-    res.status(500).json({ error: 'Error handler'})
-})

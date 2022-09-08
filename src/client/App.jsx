@@ -60,7 +60,7 @@ function App() {
 
     const data = await res.json()
     let copy = []
-    console.log('movies', movies)
+    
     if(movies.length > 0) {
     copy = movies.slice()
     }
@@ -82,9 +82,9 @@ function App() {
 
       <h1>Movie list</h1>
       <ul>{(movies) &&
-        (movies.map(movie => {
+        (movies.map((movie, i) => {
           return (
-            <li key={movie.id}>
+            <li key={i}>
               <h3>{movie.title}</h3>
               <p>Description: {movie.description}</p>
               <p>Runtime: {movie.runtimeMins}</p>
