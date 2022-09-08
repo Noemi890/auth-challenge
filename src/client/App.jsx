@@ -8,9 +8,7 @@ const apiUrl = 'http://localhost:4000';
 function App() {
   const [movies, setMovies] = useState([]);
   const [user, setUser] = useState('')
-  const [registerUser, setRegisteredUser] = useState(false)
 
-  let timeout
   const handleRegister = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/register`, {
       method: 'POST',
@@ -24,14 +22,10 @@ function App() {
     })
 
     if (res.ok) {
-      timeout = setTimeout(alertFunction(), 10000)
+      alert('registered successfully!')
     }
 
   };
-
-  const alertFunction = () => {
-    alert('registered successfully!')
-  }
 
   const handleLogin = async ({ username, password }) => {
     const res = await fetch(`${apiUrl}/user/login`, {
